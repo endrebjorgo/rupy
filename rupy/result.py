@@ -16,6 +16,11 @@ class Result[T, E]:
             case Result.Ok(value): return Option.Some(value)
             case Result.Err(e): return Option.Not()
 
+    def err(self) -> Option[T]:
+        match self:
+            case Result.Ok(value): return Option.Not()
+            case Result.Err(e): return Option.Some(e)
+
     def unwrap(self) -> T:
         match self:
             case Result.Ok(value): return value

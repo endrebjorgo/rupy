@@ -29,7 +29,7 @@ class Result[T, E]:
     def unwrap_or(self, default: T) -> T:
         match self:
             case Result.Ok(value): return value
-            case Result.Err: return default 
+            case Result.Err(): return default 
 
     def unwrap_or_else(self, f: Callable[[...], T]) -> T:
         match self:

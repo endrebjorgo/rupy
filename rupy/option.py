@@ -1,6 +1,7 @@
 from typing import TypeVar, Callable
 
 from .enum import enum, EnumCase
+from .common import unreachable
 #from .result import Result
 
 T = TypeVar("T")
@@ -21,24 +22,28 @@ class Option[T]:
     def unwrap(self) -> T:
         match self:
             case Option.Some(value): return value
-            case _: raise Exception
+            case Option.Not(): raise Exception("called `Option.unwrap()` on a `Not` value")
+            case _: unreachable()
 
     def unwrap_or(self, default: T) -> T:
         match self:
             case Option.Some(value): return value
-            case _: return default 
+            case Option.Not(): return default 
+            case _: unreachable()
 
     """
     def unwrap_or_default(self) -> T:
         match self:
             case Option.Some(value): return value
-            case _: return type(T)()
+            case Option.Not(): return type(T)()
+            case _: unreachable()
     """
 
     def unwrap_or_else(self, f: Callable[[...], T]) -> T:
         match self:
             case Option.Some(value): return value
-            case _: return f() 
+            case Option.Not(): return f() 
+            case _: unreachable()
 
 def option_convert(f: Callable[[...], T]) -> Callable[[...], Option[T]]:
     def wrapper(*args, **kwargs) -> Option[T]:

@@ -1,4 +1,6 @@
-def impl(*traits):
+from typing import Type, Callable
+
+def impl(*traits: Type) -> Callable[[Type], Type]:
     def decorator(child_class):
         child_class = type(
             child_class.__name__,

@@ -1,4 +1,4 @@
-from typing import Callable, Self, TypeVar, 
+from typing import Callable, Self, TypeVar
 
 from .enum import enum, EnumCase
 from .common import unreachable
@@ -100,7 +100,7 @@ class Option[T]:
 
     def filter(self, f: Callable[[T], bool]) -> Self:
         match self:
-            case Option.Some(value): return self if f(value) else Option.Not(_)
+            case Option.Some(value): return self if f(value) else Option.Not()
             case Option.Not(): return self
             case _: unreachable()
 

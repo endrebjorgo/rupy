@@ -1,4 +1,4 @@
-from typing import TypeVar, Callable, Self
+from typing import Callable, Self, TypeVar, 
 
 from .enum import enum, EnumCase
 from .option import Option
@@ -15,7 +15,7 @@ class Result[T, E]:
     Err = EnumCase(err=E)
 
     def is_ok(self) -> bool:
-        return self == Result.Ok(_)
+        return self == Result.Ok()
 
     def is_ok_and(self, f: Callable[[T], bool]) -> bool:
         match self:
@@ -24,7 +24,7 @@ class Result[T, E]:
             case _: unreachable()
 
     def is_err(self) -> bool:
-        return self == Result.Err(_)
+        return self == Result.Err()
     
     def is_err_and(self, f: Callable[[T], bool]) -> bool:
         match self:
@@ -87,13 +87,7 @@ class Result[T, E]:
             case Result.Err(err): raise Exception(f"called `Result.unwrap()` on a `Not` value: \"{err}\"")
             case _: unreachable()
 
-    """
-    def unwrap_or_default(self) -> T:
-        match self:
-            case Result.Ok(value): return value
-            case Result.Err(_): return type(T)()
-            case _: unreachable()
-    """
+    # def unwrap_or_default(self): pass
 
     def expect_err(self, msg: str) -> T:
         match self:

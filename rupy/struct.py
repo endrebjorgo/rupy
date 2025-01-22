@@ -1,10 +1,17 @@
 import sys
 from typing import Type
-from dataclasses import make_dataclass, dataclass
+from dataclasses import dataclass
 
-from .common import ImplMeta
+class StructImplMeta(type):
+    def __new__(cls, name, bases, dct):
+        module_name = dct.get('__module__')
+        module_globals = sys.modules[module_name].__dict__
+        if name in module_globals:
+           raise Exception(f"Struct `{name}` already defined") 
+        else:
+            return super().__new__(cls, name, bases, dct)
 
-class StructBase(metaclass=ImplMeta):
+class StructBase(metaclass=StructImplMeta):
     pass
 
 def struct(cls):

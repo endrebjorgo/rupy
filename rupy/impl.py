@@ -1,11 +1,13 @@
 from typing import Type, Callable
 
-def impl(*traits: Type) -> Callable[[Type], Type]:
-    def decorator(child_class):
-        child_class = type(
-            child_class.__name__,
-            tuple(traits),
-            dict(child_class.__dict__)
+"""
+def impl(trait: Type) -> Callable[[Type], Type]:
+    def decorator(cls):
+        new_cls = type(
+            cls.__name__,
+            (trait, cls),
+            dict(cls.__dict__)
         )
-        return child_class
+        return new_cls 
     return decorator
+"""

@@ -1,15 +1,16 @@
-from abc import ABC, abstractmethod, ABCMeta
+import ast
+import inspect
 from typing import Type
-
-"""
-def trait(cls: Type) -> Type:
-    methods = {
-        func: abstractmethod(getattr(cls, func)) 
-        for func in dir(cls) 
-        if callable(getattr(cls, func)) and not func.startswith("__")
-    }
-    return type(cls.__name__, (ABC,), methods)
-"""
+from abc import ABC, abstractmethod, ABCMeta
 
 def trait(cls):
+    for name, method in trait.__dict__.items():
+        if not callable(method) or name.startswith('__'): continue
+
+        source = inspect.getsource(method)
+        tree = ast.parse(source)
+
+        if len(tree.body) != 1 or not isinstance(tree.body[0].body[0], ast.Pass):
+            raise Exception(f"Definition of trait {cls.__name__} contains erronous method")
+
     return ABCMeta(cls.__name__, (ABC,), dict(cls.__dict__))

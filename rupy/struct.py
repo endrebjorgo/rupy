@@ -1,7 +1,6 @@
 import sys
 from typing import Callable, Type
 from dataclasses import dataclass
-from abc import ABCMeta
 
 class StructImplMeta(type):
     def __new__(cls, name, bases, dct):
@@ -21,10 +20,7 @@ class StructImplMeta(type):
         else:
             return super().__new__(cls, name, bases, dct)
 
-class StructBaseMeta(StructImplMeta, ABCMeta):
-    pass
-
-class StructBase(metaclass=StructBaseMeta):
+class StructBase(metaclass=StructImplMeta):
     pass
 
 def struct(cls):
